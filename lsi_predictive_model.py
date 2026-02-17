@@ -28,7 +28,7 @@ print("=" * 70)
 print("\n[1] Loading Historical LSI Data...")
 
 # Load CSV file
-df = pd.read_csv(r'C:\Users\UM_AS\Downloads\AI_LSI_Demo_Historical_Data.csv')
+df = pd.read_csv('AI_LSI_Demo_Historical_Data.csv')
 
 print("[OK] Data loaded successfully")
 print("Dataset shape: " + str(df.shape[0]) + " rows, " + str(df.shape[1]) + " columns")
