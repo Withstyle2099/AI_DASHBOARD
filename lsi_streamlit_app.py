@@ -47,7 +47,7 @@ np.random.seed(42)
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("AI_LSI_Demo_Historical_Data.csv")
+df = pd.read_csv("AI_LSI_Demo_Historical_Data.csv")
     return df  
 
 # Train models
