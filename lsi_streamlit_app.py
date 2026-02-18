@@ -79,7 +79,8 @@ st.markdown('---')
 
 # Load data
 df = load_data()
-
+df = pd.read_csv("AI_LSI_Demo_Historical_Data.csv")
+    return df  
 # Sidebar
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Select Page:", 
