@@ -1,0 +1,51 @@
+{
+  "tableName": "LSI_Historical",
+  "columns": [
+    "Date",
+    "Temperature_C",
+    "Flow_m3_h",
+    "pH",
+    "Calcium_mg_L",
+    "Alkalinity_mg_L",
+    "TDS_mg_L",
+    "LSI"
+  ],
+  "pages": [
+    {
+      "name": "Overview",
+      "visuals": [
+        {"type": "Card", "title": "Latest Temperature", "measure": "Latest Temperature"},
+        {"type": "Card", "title": "Latest LSI", "measure": "Latest LSI"},
+        {"type": "Card", "title": "Max Flow", "measure": "Max Flow"},
+        {"type": "LineChart", "title": "Temperature & Flow over Time", "axis": "Date", "values": ["Temperature_C","Flow_m3_h"]},
+        {"type": "Slicer", "field": "Date", "visualType": "Between"}
+      ]
+    },
+    {
+      "name": "LSI Analysis",
+      "visuals": [
+        {"type": "LineChart", "title": "LSI over Time", "axis": "Date", "values": ["LSI","LSI 7d MA"]},
+        {"type": "Scatter", "title": "LSI vs Temperature", "x": "Temperature_C", "y": "LSI"}
+      ]
+    },
+    {
+      "name": "Chemistry Details",
+      "visuals": [
+        {"type": "Table", "columns": ["Date","pH","Calcium_mg_L","Alkalinity_mg_L","TDS_mg_L","LSI"]}
+      ]
+    },
+    {
+      "name": "Learner Guide",
+      "visuals": [
+        {"type": "PDF_Viewer_or_Images", "note": "Use PDF Viewer custom visual with hosted URL, or add exported PNGs of the PDF pages as Images on the report pages."}
+      ]
+    }
+  ],
+  "measures": {
+    "Latest Temperature": "VAR LastDate = MAX('LSI_Historical'[Date])\nRETURN CALCULATE(AVERAGE('LSI_Historical'[Temperature_C]), FILTER('LSI_Historical','LSI_Historical'[Date] = LastDate))",
+    "Avg Temperature": "AVERAGE('LSI_Historical'[Temperature_C])",
+    "LSI 7d MA": "CALCULATE(AVERAGE('LSI_Historical'[LSI]), DATESINPERIOD('LSI_Historical'[Date], LASTDATE('LSI_Historical'[Date]), -7, DAY))",
+    "Max Flow": "MAX('LSI_Historical'[Flow_m3_h])",
+    "Latest LSI": "VAR LastDate = MAX('LSI_Historical'[Date])\nRETURN CALCULATE(LASTNONBLANKVALUE('LSI_Historical'[Date], FIRSTNONBLANK('LSI_Historical'[LSI],1)), FILTER('LSI_Historical','LSI_Historical'[Date]=LastDate))"
+  }
+}
