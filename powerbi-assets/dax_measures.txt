@@ -1,0 +1,36 @@
+-- DAX measures for LSI_Historical table
+-- Paste each into Power BI: Table -> New measure
+
+-- Latest Temperature (average at last date)
+Latest Temperature =
+VAR LastDate = MAX('LSI_Historical'[Date])
+RETURN
+CALCULATE(
+    AVERAGE('LSI_Historical'[Temperature_C]),
+    FILTER('LSI_Historical', 'LSI_Historical'[Date] = LastDate)
+)
+
+-- Avg Temperature (over current filter context)
+Avg Temperature = AVERAGE('LSI_Historical'[Temperature_C])
+
+-- 7-day moving average of LSI (assumes daily data)
+LSI 7d MA =
+CALCULATE(
+    AVERAGE('LSI_Historical'[LSI]),
+    DATESINPERIOD('LSI_Historical'[Date], LASTDATE('LSI_Historical'[Date]), -7, DAY)
+)
+
+-- Max Flow
+Max Flow = MAX('LSI_Historical'[Flow_m3_h])
+
+-- Latest LSI value (returns latest nonblank LSI)
+Latest LSI =
+VAR LastDate = MAX('LSI_Historical'[Date])
+RETURN
+CALCULATE(
+    MAXX(FILTER('LSI_Historical','LSI_Historical'[Date]=LastDate),'LSI_Historical'[LSI])
+)
+
+-- Notes:
+-- If your Date column has time components, consider creating a DateOnly column in Power Query
+-- and using that column for time-slicing and DAX date functions.
